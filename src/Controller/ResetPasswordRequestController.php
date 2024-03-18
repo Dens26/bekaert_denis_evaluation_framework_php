@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ResetPasswordRequestController extends AbstractController
 {
@@ -20,7 +21,7 @@ class ResetPasswordRequestController extends AbstractController
     }
 
     #[Route('/mot-de-passe-oublie', name: 'app_reset_password_request')]
-    public function index(Request $request, Mail $mail): Response
+    public function index(Request $request, Mail $mail, UrlGeneratorInterface $urlGenerator): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_home_index');
@@ -43,6 +44,11 @@ class ResetPasswordRequestController extends AbstractController
                 $url = $this->generateUrl('app_update_password_request', [
                     'token' => $resetPasswordRequest->getHashedToken()
                 ]);
+
+                $url = $urlGenerator->generate('app_update_password_request', [
+                    'token' => $resetPasswordRequest->getHashedToken()
+                ], UrlGeneratorInterface::ABSOLUTE_URL);
+
                 $content = "Bonjour " . $user->getFirstName() . '. Vous avez demandé la réinitialisation de votre mot de passe.<br><br>Veuillez cliquer sur le lien suivant : <a href="' . $url . '">Lien de réinitialisation</a>';
                 $mail->send($user->getEmail(), $user->getFirstName(), 'Réinitialiser votre mot de passe', $content);
             }
