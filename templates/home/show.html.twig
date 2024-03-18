@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - NewsApp
+{% endblock %}
+{% block body %}
+	<a class="btn btn-primary mt-2" href={{path('app_home_index')}}>Back to list</a>
+	<h1 class="m-2 ">Mon actualité</h1>
+	<p>Article créé le
+		<b>{{one_news.CreatedAt|date('d-m-Y')}}</b>
+		et mis à jour le
+		<b>{{one_news.UpdatedAt|date('d-m-Y')}}</b>
+	</p>
+	<div class="container w-75">
+		<h3 class="p-2">{{one_news.title}}</h3>
+		<p>{{one_news.description}}</p>
+		<img class="w-100" src="/assets/img/{{one_news.imageName}}" alt={{one_news.imageName}}>
+	</div>
+{% endblock %}

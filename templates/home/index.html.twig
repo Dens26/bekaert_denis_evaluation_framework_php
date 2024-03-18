@@ -6,100 +6,19 @@
 {% block body %}
 	<section class="lastNews">
 
-		<h2>Last news</h2>
-
-
-		<article>
-
-			<h3>First News</h3>
-
-			<img src="/assets/img/e007c504400b.jpg">
-
-			<p>
-				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Odio consequuntur vero dolores
-				                        similique alias, fuga
-			</p>
-
-			<a href="#">Read More</a>
-
-		</article>
-
-
-		<article>
-
-			<h3>A dream</h3>
-
-			<img src="/assets/img/14ffeb3efb9a.jpg">
-
-			<p>
-				Vel veniam aliquid placeat itaque recusandae, eaque voluptas! Est non dolorum quam
-				                        exercitationem blanditiis o
-			</p>
-
-			<a href="#">Read More</a>
-
-		</article>
-
-
-		<article>
-
-			<h3>The Dune</h3>
-
-			<img src="/assets/img/9b3a2436d140.jpg">
-
-			<p>
-				Perferendis magni incidunt illum earum aut a? Nisi in iure exercitationem ex veritatis maiores
-				                        odio, corporis
-			</p>
-
-			<a href="#">Read More</a>
-
-		</article>
-
-		<article>
-
-			<h3>Only</h3>
-
-			<img src="/assets/img/640fb3840709.jpg">
-
-			<p>
-				Perferendis magni incidunt illum earum aut a? Nisi in iure exercitationem ex veritatis maiores
-				                        odio, corporis
-			</p>
-
-			<a href="#">Read More</a>
-
-		</article>
-
-		<article>
-
-			<h3>Very Hard</h3>
-
-			<img src="/assets/img/10b8dfa44214.jpg">
-
-			<p>
-				Ullam corrupti eum saepe! Illum dolorem ipsum dolores esse assumenda? Impedit, dolorem cum?
-				                        Officiis voluptate
-			</p>
-
-			<a href="#">Read More</a>
-
-		</article>
-
-		<article>
-
-			<h3>Desert</h3>
-
-			<img src="/assets/img/ad96788de26a.jpg">
-
-			<p>
-				Quia ut animi sapiente dolorum nihil iste veritatis voluptatum id eius. Suscipit sint harum
-				                        voluptate labore m
-			</p>
-
-			<a href="#">Read More</a>
-
-		</article>
-
+		<h2>Dernières nouvelles</h2>
+		{% for one_news in news %}
+			<article>
+				<h3>{{one_news.title}}</h3>
+				<img src="/assets/img/{{one_news.imageName}}">
+				<p>
+					{% set description_shortened = one_news.description|slice(0, 150)|join(' ') %}
+					{{ description_shortened }}
+					{% if one_news.description|length > 150 %} ...
+					{% endif %}
+				</p>
+				<a href={{path('app_home_show', {'id': one_news.id})}}>Read More</a>
+			</article>
+		{% endfor %}
 	</section>
 {% endblock %}
