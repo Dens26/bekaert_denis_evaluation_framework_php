@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Class\Mail;
 use App\Entity\ResetPasswordRequest;
 use App\Entity\User;
+use App\Form\UpdatePasswordType;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,14 +52,36 @@ class ResetPasswordRequestController extends AbstractController
 
                 $content = "Bonjour " . $user->getFirstName() . '. Vous avez demandé la réinitialisation de votre mot de passe.<br><br>Veuillez cliquer sur le lien suivant : <a href="' . $url . '">Lien de réinitialisation</a>';
                 $mail->send($user->getEmail(), $user->getFirstName(), 'Réinitialiser votre mot de passe', $content);
+            } else {
+                $this->addFlash('notice', 'Adresse mail inconnue');
             }
         }
-
+        $this->addFlash('success', 'Un mail de réinitialisation vous a été envoyé');
         return $this->render('reset_password_request/index.html.twig');
     }
 
-    #[Route('/mise-a-jour-mot-de-passe', name: 'app_update_password_request')]
-    public function update(){
+    #[Route('/mise-a-jour-mot-de-passe/{token}', name: 'app_update_password_request')]
+    public function update(mixed $token, Request $request)
+    {
+        $resetPassword = $this->entityManager->getRepository(ResetPasswordRequest::class)->findOneBy(['hashedToken' => $token]);
+        if (!$resetPassword) {
+            return $this->redirectToRoute('app_reset_password_request');
+        }
+
+        if ($resetPassword->getRequestedAt() > $resetPassword->getExpiresAt()) {
+            $this->addFlash('notice', 'La demande de réinitialisaiton à expirée');
+            return $this->redirectToRoute('app_reset_password_request');
+        }
+
+        $form = $this->createForm(UpdatePasswordType::class);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            dd($form);
+        }
+        return $this->render('reset_password_request/update.html.twig', [
+            'form' => $form
+        ]);
 
     }
 }
