@@ -19,7 +19,7 @@ class UpdatePasswordType extends AbstractType
             'label' => 'Mot de passe',
             'mapped' => false,
             'attr' => [
-                'placeholder' => "Saisissez votre mot de passe",
+                'placeholder' => "Saisissez votre nouveau mot de passe",
                 'autocomplete' => 'new-password'
             ],
             'constraints' => [

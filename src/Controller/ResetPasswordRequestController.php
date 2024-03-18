@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -55,13 +56,14 @@ class ResetPasswordRequestController extends AbstractController
             } else {
                 $this->addFlash('notice', 'Adresse mail inconnue');
             }
+            $this->addFlash('success', 'Un mail de réinitialisation vous a été envoyé');
+            return $this->redirectToRoute('app_home_index');
         }
-        $this->addFlash('success', 'Un mail de réinitialisation vous a été envoyé');
         return $this->render('reset_password_request/index.html.twig');
     }
 
     #[Route('/mise-a-jour-mot-de-passe/{token}', name: 'app_update_password_request')]
-    public function update(mixed $token, Request $request)
+    public function update(mixed $token, Request $request, UserPasswordHasherInterface $userPasswordHasher, Mail $mail)
     {
         $resetPassword = $this->entityManager->getRepository(ResetPasswordRequest::class)->findOneBy(['hashedToken' => $token]);
         if (!$resetPassword) {
@@ -76,12 +78,24 @@ class ResetPasswordRequestController extends AbstractController
         $form = $this->createForm(UpdatePasswordType::class);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            dd($form);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $resetPassword->getUser();
+
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            $this->entityManager->flush();
+            $this->addFlash('success', 'Votre mot de passe a bien été modifié');
+
+            $mail->send($user->getEmail(), $user->getFirstName(), 'Réinitialisation de votre mot de passe', 'Votre mot de passe a bien été réinitialisé');
+
+            return $this->redirectToRoute('app_contact_index');
         }
         return $this->render('reset_password_request/update.html.twig', [
             'form' => $form
         ]);
-
     }
 }
