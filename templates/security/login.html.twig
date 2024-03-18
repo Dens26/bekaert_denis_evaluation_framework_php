@@ -11,9 +11,9 @@
 
 		{% if app.user %}
 			<div class="mb-3">
-				You are logged in as
+				Vous êtes connecté en tant que 
 				{{ app.user.userIdentifier }},
-				<a href="{{ path('app_logout') }}">Logout</a>
+				<a href="{{ path('app_logout') }}">Se déconnecter</a>
 			</div>
 		{% endif %}
 
@@ -25,6 +25,9 @@
 
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
+		<p>Mot de passe oublié ?
+			<a href={{path('app_reset_password_request')}}>Réinitialiser le mot de passe</a>
+		</p>
 		<p>Vous n'avez pas encore de compte ?
 			<a href={{path('app_register')}}>Créez votre compte ici</a>
 		</p>

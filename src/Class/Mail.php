@@ -20,7 +20,8 @@ class Mail
             ->to($toEmail)
             ->htmlTemplate("emails/contact.html.twig")
             ->context([
-                'name' => $toName
+                'name' => $toName,
+                'content' => $content
             ])
             ->subject($subject);
         $this->mailer->send($email);

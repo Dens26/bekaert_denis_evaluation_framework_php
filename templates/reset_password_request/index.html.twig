@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mot de passe oublié!
+{% endblock %}
+
+{% block body %}
+	<form method="post">
+
+		<h1 class="h3 mb-3 font-weight-normal">Réinitialiser votre mot de passe</h1>
+		<label for="inputEmail">Adresse e-mail</label>
+		<input type="email" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus placeholder="Saisissez votre adresse e-mail"><br>
+		<button class="btn btn-lg btn-success " type="submit">
+			Valider
+		</button>
+	</form>
+{% endblock %}
