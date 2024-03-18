@@ -8,42 +8,24 @@
 
 	<div class="contact">
 
-		<section class="form">
+		{{form(form)}}
 
-			<form name="contact" method="post">
-				<div>
-					<label for="contact_firstName" class="required">First name</label><input type="text" id="contact_firstName" name="contact[firstName]" required="required" maxlength="255" class="form-control"></div>
-				<div>
-					<label for="contact_lastName" class="required">Last name</label><input type="text" id="contact_lastName" name="contact[lastName]" required="required" maxlength="255" class="form-control"></div>
-				<div>
-					<label for="contact_email" class="required">Email</label><input type="text" id="contact_email" name="contact[email]" required="required" maxlength="255" class="form-control"></div>
-				<div>
-					<label for="contact_message" class="required">Message</label>
-					<textarea id="contact_message" name="contact[message]" required="required" class="form-control"></textarea>
-				</div>
+			<section class="address">
+				<address>
+					<div>
+						<h3>Address</h3>
+						150 Rue Nicolas Louis Vauquelin, 31100 Toulouse
+					</div>
+					<div>
+						<h3>Phone</h3>
+						XXXX612623
+					</div>
+					<div>
+						<h3>E-mail</h3>
+						eric.ponchant.apformation@gmail.com
+					</div>
+				</address>
+			</section>
 
-				<button type="submit" class="btn">Send the message</button>
-				<input type="hidden" id="contact__token" name="contact[_token]" value="f91c4a15e9e14e17a7e.svf1Pa8ix_-7S5kBDqG4HvhU0_o7Nmc4F3lIxQ0vWIc.1bSZfp4PvZr-KqFESsvZLswhm80DBi4OUykmrV59PtbbqJAQ4ljxi_cArQ">
-			</form>
-
-		</section>
-
-		<section class="address">
-			<address>
-				<div>
-					<h3>Address</h3>
-					150 Rue Nicolas Louis Vauquelin, 31100 Toulouse
-				</div>
-				<div>
-					<h3>Phone</h3>
-					XXXX612623
-				</div>
-				<div>
-					<h3>E-mail</h3>
-					eric.ponchant.apformation@gmail.com
-				</div>
-			</address>
-		</section>
-
-	</div>
-{% endblock %}
+		</div>
+	{% endblock %}
