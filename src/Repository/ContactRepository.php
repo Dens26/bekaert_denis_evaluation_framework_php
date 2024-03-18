@@ -21,6 +21,27 @@ class ContactRepository extends ServiceEntityRepository
         parent::__construct($registry, Contact::class);
     }
 
+
+    /**
+     * Create a new contact in DB
+     *
+     * @param  mixed $data
+     * @return void
+     */
+    public function createContact(mixed $data): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        $contact = new Contact();
+        $contact->setFirstName($data->getFirstName());
+        $contact->setLastName($data->getLastName());
+        $contact->setEmail($data->getEmail());
+        $contact->setMessage($data->getMessage());
+
+        $entityManager->persist($contact);
+        $entityManager->flush();
+    }
+
     //    /**
     //     * @return Contact[] Returns an array of Contact objects
     //     */

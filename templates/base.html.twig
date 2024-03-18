@@ -27,17 +27,21 @@
 
 				<nav class="primaryNav">
 					<ul>
-						<li><a href={{path('app_home_index')}}>Home</a></li>
-						<li><a href={{path('app_contact_index')}}>Contact</a></li>
-						<li><a href={{path('app_register')}}>Register</a></li>
-						<li><a href={{path('app_login')}}>Login</a></li>
+						<li><ahref={{path('app_home_index')}}>Home</ahref=></li>
+						<li><ahref={{path('app_contact_index')}}>Contact</ahref=></li>
+						<li><ahref={{path('app_register')}}>Register</ahref=></li>
+						<li><ahref={{path('app_login')}}>Login</ahref=></li>
 					</ul>
 				</nav>
 
 			</div>
 
 		</header>
-
+		{% for type, messages in app.flashes %}
+			{% for message in messages %}
+				<div class="alert alert-{{type}}">{{message}}</div>
+			{% endfor %}
+		{% endfor %}
 		<div class="container">
 			{% block body %}
 				{# Body #}
