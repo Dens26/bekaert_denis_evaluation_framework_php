@@ -27,10 +27,27 @@
 
 				<nav class="primaryNav">
 					<ul>
-						<li><ahref={{path('app_home_index')}}>Home</ahref=></li>
-						<li><ahref={{path('app_contact_index')}}>Contact</ahref=></li>
-						<li><ahref={{path('app_register')}}>Register</ahref=></li>
-						<li><ahref={{path('app_login')}}>Login</ahref=></li>
+						<li>
+							<a href={{path('app_home_index')}}>Accueil</a>
+						</li>
+						<li>
+							<a href={{path('app_contact_index')}}>Contact</a>
+						</li>
+						{% if app.user %}
+							<li>
+								<a href={{path('app_account_index')}}>Mon compte</a>
+							</li>
+							<li>
+								<a href={{path('app_logout')}}>Déconnexion</a>
+							</li>
+						{% else %}
+							<li>
+								<a href={{path('app_register')}}>Inscription</a>
+							</li>
+							<li>
+								<a href={{path('app_login')}}>Connexion</a>
+							</li>
+						{% endif %}
 					</ul>
 				</nav>
 

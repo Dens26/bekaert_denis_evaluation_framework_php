@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\NewsRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -72,6 +73,9 @@ class News
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
+        if ($this->createdAt === null) {
+            $this->createdAt = new DateTimeImmutable();
+        }
         return $this->createdAt;
     }
 
@@ -84,6 +88,9 @@ class News
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
+        if ($this->updatedAt === null) {
+            $this->updatedAt = new DateTimeImmutable();
+        }
         return $this->updatedAt;
     }
 
