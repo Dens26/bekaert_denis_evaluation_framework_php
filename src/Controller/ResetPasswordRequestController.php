@@ -53,11 +53,13 @@ class ResetPasswordRequestController extends AbstractController
 
                 $content = "Bonjour " . $user->getFirstName() . '. Vous avez demandé la réinitialisation de votre mot de passe.<br><br>Veuillez cliquer sur le lien suivant : <a href="' . $url . '">Lien de réinitialisation</a>';
                 $mail->send($user->getEmail(), $user->getFirstName(), 'Réinitialiser votre mot de passe', $content);
+
+                $this->addFlash('success', 'Un mail de réinitialisation vous a été envoyé');
+                return $this->redirectToRoute('app_home_index');
             } else {
                 $this->addFlash('notice', 'Adresse mail inconnue');
+                return $this->redirectToRoute('app_reset_password_request');
             }
-            $this->addFlash('success', 'Un mail de réinitialisation vous a été envoyé');
-            return $this->redirectToRoute('app_home_index');
         }
         return $this->render('reset_password_request/index.html.twig');
     }
@@ -84,7 +86,7 @@ class ResetPasswordRequestController extends AbstractController
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
-                    $form->get('plainPassword')->getData()
+                    $form->get('password')->getData()
                 )
             );
             $this->entityManager->flush();
