@@ -33,7 +33,7 @@ class ResetPasswordRequestController extends AbstractController
                 $resetPasswordRequest = new ResetPasswordRequest();
                 $resetPasswordRequest->setUser($user);
                 $resetPasswordRequest->setSelector(bin2hex(random_bytes(8)));
-                $resetPasswordRequest->setHashedToken(password_hash(random_bytes(32), PASSWORD_BCRYPT));
+                $resetPasswordRequest->setHashedToken(uniqid());
                 $resetPasswordRequest->setRequestedAt(new DateTimeImmutable());
                 $resetPasswordRequest->setExpiresAt(new DateTimeImmutable('+1 hour'));
 
