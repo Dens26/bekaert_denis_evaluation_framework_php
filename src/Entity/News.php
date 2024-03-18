@@ -24,11 +24,9 @@ class News
     #[ORM\Column(length: 255)]
     private ?string $imageName = null;
 
-    #[ORM\Column]
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column]
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $updatedAt = null;
 
