@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -36,6 +38,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+
+    #[ORM\Column(length: 255)]
+    private ?string $firstName = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $lastName = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $pseudo = null;
+
+    #[ORM\OneToMany(targetEntity: ResetPasswordRequest::class, mappedBy: 'user_')]
+    private Collection $resetPasswordRequests;
+
+    public function __construct()
+    {
+        $this->resetPasswordRequests = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +139,72 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): static
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): static
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): static
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ResetPasswordRequest>
+     */
+    public function getResetPasswordRequests(): Collection
+    {
+        return $this->resetPasswordRequests;
+    }
+
+    public function addResetPasswordRequest(ResetPasswordRequest $resetPasswordRequest): static
+    {
+        if (!$this->resetPasswordRequests->contains($resetPasswordRequest)) {
+            $this->resetPasswordRequests->add($resetPasswordRequest);
+            $resetPasswordRequest->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeResetPasswordRequest(ResetPasswordRequest $resetPasswordRequest): static
+    {
+        if ($this->resetPasswordRequests->removeElement($resetPasswordRequest)) {
+            // set the owning side to null (unless already changed)
+            if ($resetPasswordRequest->getUser() === $this) {
+                $resetPasswordRequest->setUser(null);
+            }
+        }
 
         return $this;
     }
