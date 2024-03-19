@@ -24,10 +24,10 @@ class News
     #[ORM\Column(length: 255)]
     private ?string $imageName = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column]
     private ?DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column]
     private ?DateTimeImmutable $updatedAt = null;
 
     public function getId(): ?int
@@ -73,9 +73,6 @@ class News
 
     public function getCreatedAt(): ?DateTimeImmutable
     {
-        if ($this->createdAt === null) {
-            $this->createdAt = new DateTimeImmutable();
-        }
         return $this->createdAt;
     }
 
@@ -88,15 +85,12 @@ class News
 
     public function getUpdatedAt(): ?DateTimeImmutable
     {
-        if ($this->updatedAt === null) {
-            $this->updatedAt = new DateTimeImmutable();
-        }
         return $this->updatedAt;
     }
 
     public function setUpdatedAt(DateTimeImmutable $updatedAt): static
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = new DateTimeImmutable();
 
         return $this;
     }
